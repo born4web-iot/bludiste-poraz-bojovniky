@@ -1,3 +1,35 @@
+function createXBounceEnemy (X: number, Y: number, XSpeed: number) {
+    XEnemy = sprites.create(img`
+        ..............cfff..............
+        ............ccddbf..............
+        ...........cbddbff.........ccc..
+        ..........fccbbcf.........cbbc..
+        ...fffffffccccccff.......cdbc...
+        .ffcbbbbbbbbbbbbbcfff....cdbf...
+        fcbbbbbbbbbcbbbbbbcccff.cdbf....
+        fbcbbbbffbbbcbcbbbcccccffdcf....
+        fbb1111ffbbbcbcbbbccccccbbcf....
+        .fb11111111bbcbbbccccccccbbcf...
+        ..fccc33cb11bbbbcccccccfffbbf...
+        ...fc131c111bbbcccccbdbc..fbbf..
+        ....f33c111cbbccdddddbc....fff..
+        .....ff1111fdbbccddbcc..........
+        .......cccccfdbbbfcc............
+        .............fffff..............
+        `, SpriteKind.Enemy)
+    XEnemy.setPosition(X, Y)
+    XEnemy.setBounceOnWall(true)
+    XEnemy.setVelocity(XSpeed, 0)
+}
+function showXYPosition (mySprite: Sprite) {
+    scene.cameraFollowSprite(mySprite)
+    console.log("X: " + mySprite.x + " Y: " + mySprite.y)
+}
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSprite) {
+    game.gameOver(false)
+})
+let XEnemy: Sprite = null
+let mySprite: Sprite = null
 tiles.setCurrentTilemap(tilemap`level1`)
 let Jedi = sprites.create(img`
     ........................
@@ -25,9 +57,12 @@ let Jedi = sprites.create(img`
     ........................
     ........................
     `, SpriteKind.Player)
-Jedi.setPosition(15, 15)
-controller.moveSprite(Jedi)
+Jedi.setPosition(30, 35)
+controller.moveSprite(Jedi, 100, 100)
 scene.cameraFollowSprite(Jedi)
+mySprite = Jedi
+createXBounceEnemy(50, 80, 50)
+createXBounceEnemy(50, 80, -80)
 game.onUpdateInterval(1000, function () {
-    console.log("" + Jedi.x + Jedi.y)
+	
 })
